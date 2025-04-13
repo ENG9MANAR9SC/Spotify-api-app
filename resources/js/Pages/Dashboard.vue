@@ -7,24 +7,50 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
-            >
-                Dashboard
-            </h2>
-        </template>
+      <template #header>
+          <h2 class="text-xl font-semibold leading-tight text-gray-800">
+              Dashboard
+          </h2>
+      </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                >
-                    <div class="p-6 text-gray-900">
-                        You're logged in!
-                    </div>
-                </div>
-            </div>
-        </div>
+      <!-- Trend Songs -->
+        <song-card></song-card>
+
     </AuthenticatedLayout>
 </template>
+
+<script>
+import axios from 'axios';
+
+
+export default {
+  data() {
+    return {
+      searchQuery: '',
+      songs: [],
+      loading: false,
+    };
+  },
+  methods: {
+     getTrendSpotifySongs() {
+        this.loading = true;
+        try {
+          axios.get(`/spotify/get/tracks`)
+          .then(response => {
+            this.songs = response.data;
+
+          })
+          .catch(error => {
+            console.error('Error searching songs:', error);
+            this.error = 'Failed to fetch songs. Please try again.';
+          });
+        } finally {
+          this.loading = false;
+        }
+    },
+  },
+  mounted() {
+    this.getTrendSpotifySongs();
+  }
+};
+</script>

@@ -5,3 +5,12 @@ Diese Laravel-Applikation ermöglicht es Nutzern, auf einfache und intuitive Wei
 ## 2 create command to retrieve songs and save them in database
 ## 3 create service for functionality spotify
 ## 4 create migration &  models 
+
+
+## excute the command php artisan make:command spotify:import-tracks to connect with spotify and sve songs
+
+## this connection is access for 1 hour 
+
+## 
+
+

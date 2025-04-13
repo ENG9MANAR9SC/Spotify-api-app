@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/playlists/{playlist}', [PlaylistController::class, 'show']);
         Route::get('/playlists/search', [PlaylistController::class, 'searchSpotify']);
         Route::post('/playlists/import', [PlaylistController::class, 'importSpotifyPlaylist']);
+        Route::get('/get/tracks', [SongController::class, 'getTrendTracks']);
         
     });
     
