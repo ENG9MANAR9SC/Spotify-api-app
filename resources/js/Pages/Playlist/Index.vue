@@ -1,6 +1,10 @@
 <template>
-    <div >
-        <div class="py-3 px-2">Playlist All : </div>
+    <div class="px-6">
+        <div class="flex justify-between gap-2 py-4">   
+            <h3 class="py-3 px-2">Playlist All : </h3>
+            <a :href="route('home')" class="text-base rounded-lg bg-red-400 text-black/70 p-2"> Go Home</a>
+        </div>
+        
         <div v-if="loading" class="m-3">
             <h3>Loading--</h3>
         </div>

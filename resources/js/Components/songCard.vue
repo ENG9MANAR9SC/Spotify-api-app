@@ -2,12 +2,11 @@
     <div class="py-6 px-3">
         <div class="flex justify-between">
           <h2 class="text-2xl font-semibold text-gray-700 mb-4">Trends Music</h2>
-          
           <button
-              @click="createNewPlaylist()"
-              class="rounded-md p-2 text-base text-gray-800 bg-red-300">
-              Create New Playlist 
-        </button>
+            @click="createNewPlaylist()"
+            class="rounded-md p-2 text-base text-gray-800 bg-red-300">
+            Create New Playlist 
+          </button>
         </div>
         <Card
             class="overflow-hidden rounded-lg bg-white/5 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)]

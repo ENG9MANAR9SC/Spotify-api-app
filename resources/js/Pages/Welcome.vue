@@ -43,10 +43,10 @@ function handleImageError() {
                             <img src="/public/images/music.png" height="40" width="40"/>  
                         </div>
                         <div class="flex flex-wrap gap-2"> 
-                            <Link href="">Home</Link>
-                            <Link href="">Playlists</Link>
-                            <Link href="">Songs</Link>
-                            <Link href="">About us</Link>
+                            <a href="#">Home</a>
+                            <a :href="route('playlists.index')">Playlists</a>
+                            <!-- <a href="">Songs</a>
+                            <a href="">About us</a> -->
                         </div>
                     </div>
                     <!-- Register & Login -->
