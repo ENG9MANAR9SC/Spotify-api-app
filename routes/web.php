@@ -39,7 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/playlist/delete/{playlistId}', [PlaylistController::class, 'destroy']);
         Route::post('/playlist/create/{playlistId}', [PlaylistController::class, 'createOrUpdate']);
         
-        Route::post('/playlists/{playlistId}/songs/{songId}/add', [PlaylistController::class, 'addSong']);
+        Route::post('/playlists/{playlistId}/songs/{songId}/add', [PlaylistController::class, 'addSong'])->name('playlists.songs.add');
+        Route::post('/playlists/{playlistId}/songs/{songId}/delete', [PlaylistController::class, 'destroySong'])->name('playlists.songs.destroy');
 
 
         Route::get('/playlists/show/{playlistId}', [PlaylistController::class, 'show'])->name('playlist');

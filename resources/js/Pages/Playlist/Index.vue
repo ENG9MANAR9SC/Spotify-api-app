@@ -66,22 +66,20 @@ export default {
            }
         },
         deletePlaylist (playlistId) {
-            try {
+            try {           
+                if (confirm('Are you sure you want to delete this playlist?')) {
+                    axios.post(`/spotify/playlist/delete/${playlistId}`)
+                        .then(() => {
+                            console.log('Error deleting playlist:');
+                        })
+                        .catch(error => {
+                            console.error('Error deleting playlist:', error);
 
-            
-            if (confirm('Are you sure you want to delete this playlist?')) {
-                axios.post(`/spotify/playlist/delete/${playlistId}`)
-                    .then(() => {
-                        console.log('Error deleting playlist:');
-                    })
-                    .catch(error => {
-                        console.error('Error deleting playlist:', error);
-
-                    });
-            }
-            } finally {
-                this.loading = false;
-                window.location.href = 'index';
+                        });
+                    }
+                } finally {
+                    this.loading = false;
+                    window.location.href = 'index';
                 }
         },
     },

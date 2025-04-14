@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exeption;
 use App\Models\Song;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -12,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PlaylistController extends Controller
 {
@@ -22,22 +24,7 @@ class PlaylistController extends Controller
         $this->spotifyService = $spotifyService;
     }
 
-    public function edit($playlistId = null): Response
-    {
 
-        if($playlistId) {
-            $userId = Auth::id();
-            
-            $playlist = Playlist::where('id', $playlistId)
-            ->where('user_id', $userId)
-            ->firstOrFail();
-        }
-        return Inertia::render('Playlist/Edit', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
-            'playlist' => $playlist ? $playlist->toArray() : null,
-        ]);
-    }
     public function index(): Response
     {
         return Inertia::render('Playlist/Index', [
@@ -61,6 +48,22 @@ class PlaylistController extends Controller
         
 
          return response()->json($user);
+    }
+    public function edit($playlistId = null): Response
+    {
+
+        if($playlistId) {
+            $userId = Auth::id();
+            
+            $playlist = Playlist::where('id', $playlistId)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+        }
+        return Inertia::render('Playlist/Edit', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+            'playlist' => $playlist ? $playlist->toArray() : null,
+        ]);
     }
 
     
@@ -132,5 +135,31 @@ class PlaylistController extends Controller
 
         return redirect()->route('playlists.index')->with('success', 'Playlist deleted successfully.');
     }
+
+    public function destroySong(string $songId, string $playlistId): RedirectResponse
+    {
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized.');
+        }
+
+        $userId = Auth::id();
+        try {
+            $song = Song::where('id', $songId)
+                ->where('user_id', $userId)
+                ->where('playlist_id',$playlistId)
+                ->firstOrFail();
+
+            $song->delete();
+
+            return redirect()->route('playlists.index')->with('success', 'Playlist deleted successfully.');
+        }
+        
+        catch(ModelNotFoundException $e) {
+        
+        }
+      
+ 
+    }
     
+
 }
