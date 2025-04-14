@@ -27,7 +27,7 @@
                     <td class="p-2">1961</td>
                     <td class="p-2">
                         <a :href="route('playlist.edit', { playlistId: playlist.id })" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Edit</a>
-                        <a :href="route('playlist.delete', { playlistId: playlist.id })" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Delete</a>
+                        <a @click="deletePlaylist(playlist.id)" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Delete</a>
                     </td>
                 </tr>
                 </tbody>
@@ -64,6 +64,25 @@ export default {
            } finally{
             this.loading = false;
            }
+        },
+        deletePlaylist (playlistId) {
+            try {
+
+            
+            if (confirm('Are you sure you want to delete this playlist?')) {
+                axios.post(`/spotify/playlist/delete/${playlistId}`)
+                    .then(() => {
+                        console.log('Error deleting playlist:');
+                    })
+                    .catch(error => {
+                        console.error('Error deleting playlist:', error);
+
+                    });
+            }
+            } finally {
+                this.loading = false;
+                window.location.href = 'index';
+                }
         },
     },
     setup() {

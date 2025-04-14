@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Services\SpotifyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
 class PlaylistController extends Controller
@@ -31,7 +32,7 @@ class PlaylistController extends Controller
             ->where('user_id', $userId)
             ->firstOrFail();
         }
-        return Inertia::render('Playlist/edit', [
+        return Inertia::render('Playlist/Edit', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
             'playlist' => $playlist ? $playlist->toArray() : null,
@@ -113,6 +114,23 @@ class PlaylistController extends Controller
     {
         $playlist = $this->spotifyService->getPlaylistById($id);
         // ...
+    }
+
+    public function destroy(string $playlistId): RedirectResponse
+    {
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized.');
+        }
+
+        $userId = Auth::id();
+
+        $playlist = Playlist::where('id', $playlistId)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
+        $playlist->delete();
+
+        return redirect()->route('playlists.index')->with('success', 'Playlist deleted successfully.');
     }
     
 }
