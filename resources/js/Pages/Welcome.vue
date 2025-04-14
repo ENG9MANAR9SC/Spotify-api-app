@@ -125,7 +125,7 @@ function handleImageError() {
                 </main>
 
                 <!-- footer section -->
-                <footer class="py-16 flex justify-between text-center text-sm text-black dark:text-white/70">
+                <footer class="py-16 flex justify-between text-center text-sm text-black">
                     <div>
                         Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
                     </div>  
@@ -167,6 +167,9 @@ export default {
     },
     addToPlaylist(song) {
       // Logic here
+    //   try {
+    //     axios.post()
+    //   }
       console.log('Adding song to playlist:', song);
     },
   },

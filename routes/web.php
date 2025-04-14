@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\Playlist;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\SongController;
@@ -26,12 +27,25 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::prefix('spotify')->group(function () {
+        
         Route::get('/songs/search', [SongController::class, 'searchSongs']);
-        Route::get('/playlists', [PlaylistController::class, 'index']);
-        Route::get('/playlists/{playlist}', [PlaylistController::class, 'show']);
+        Route::get('/get/tracks', [SongController::class, 'getTrendTracks']);
+
+
+        Route::get('/playlists/index', [PlaylistController::class, 'index'])->name('playlists.index');
+        Route::get('/playlists/get/playlists', [PlaylistController::class, 'getPlaylists']);
+
+        Route::get('/playlist/edit/{playlistId}', [PlaylistController::class, 'edit'])->name('playlist.edit');
+        Route::get('/playlist/delete/{playlistId}', [PlaylistController::class, 'delete'])->name('playlist.delete');
+        Route::post('/playlist/create/{playlistId}', [PlaylistController::class, 'createOrUpdate']);
+        
+        Route::post('/playlists/{playlistId}/songs/{songId}/add', [PlaylistController::class, 'addSong']);
+
+
+        Route::get('/playlists/show/{playlistId}', [PlaylistController::class, 'show'])->name('playlist');
         Route::get('/playlists/search', [PlaylistController::class, 'searchSpotify']);
         Route::post('/playlists/import', [PlaylistController::class, 'importSpotifyPlaylist']);
-        Route::get('/get/tracks', [SongController::class, 'getTrendTracks']);
+
         
     });
     

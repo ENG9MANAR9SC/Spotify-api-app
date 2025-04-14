@@ -1,11 +1,18 @@
 <template>
     <div class="py-6 px-3">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Trends Music</h2>
+        <div class="flex justify-between">
+          <h2 class="text-2xl font-semibold text-gray-700 mb-4">Trends Music</h2>
+          
+          <button
+              @click="createNewPlaylist()"
+              class="rounded-md p-2 text-base text-gray-800 bg-red-300">
+              Create New Playlist 
+        </button>
+        </div>
         <Card
             class="overflow-hidden rounded-lg bg-white/5 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)]
             ring-1 ring-white/10 transition duration-300 hover:border-white/20 hover:shadow-lg
-            dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:border-zinc-700"
-        >
+            dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:border-zinc-700">
             <CardHeader>
                 <CardTitle class="text-gray-200">
                     <div v-if="loading" class="w-48 h-6 bg-black/20" ></div>
@@ -51,11 +58,14 @@
 
 <script>
 import axios from 'axios';
+import { router } from '@inertiajs/vue3';
+
 export default {
   data() {
     return {
       searchQuery: '',
       songs: [],
+      newPlaylist: [],
       loading: false,
     };
   },
@@ -76,6 +86,25 @@ export default {
         this.loading = false;
       }
     },
+
+    createNewPlaylist() {
+       this.loading = true;
+       try {
+        axios.post("spotify/playlists/edit")
+        .then(response => {
+          this.newPlaylist = response.data;
+        }).catch(error => {
+          console.error('Error creating play,ist:', error);
+          this.error = 'Failed to create playlist. Please try again.';
+        })
+       } finally {
+        this.loading = false;
+        window.location.href = 'spotify/playlist/create/{`this.newPlaylist.id`}';
+        //params: { id: this.newPlaylist.id
+       }
+
+    },
+
     addToPlaylist(song) {
      // add logic here
       console.log('Adding song to playlist:', song);
@@ -84,6 +113,7 @@ export default {
   mounted() {
     this.getSpotifySongs();
   }
+
 };
 </script>
 
