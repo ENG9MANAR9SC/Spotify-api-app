@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\SpotifyService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class SongController extends Controller
 {
@@ -38,4 +40,6 @@ class SongController extends Controller
         return response()->json($results);
 
     }
+
+
 }

@@ -138,6 +138,42 @@
             <a :href="route('playlists.index')" class="text-base rounded-lg bg-red-400 text-black/70 p-2"> Show Your Playlists</a>
         </div>
       </div>
+      <!-- Songs -->
+       <div class="mb-6 p-2">
+        <div v-if="loading" class="m-3">
+            <h3>Loading--</h3>
+        </div>
+        <div v-else class="">
+            <table class="table-auto">
+                <thead>
+                    <tr>
+                        <th class="border border-red-400 p-2">Cover</th>
+                        <th class="border border-red-400 p-2">Song Name</th>
+                        <th class="border border-red-400 p-2">Artist</th>
+                        <th class="border border-red-400 p-2">Year</th>
+                        <th class="border border-red-400 p-2">Album</th>
+                        <th class="border border-red-400 p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                <!-- <tr v-if="playlist.songs.length == 0">
+                    <span> There is no data</span>
+                </tr> -->
+                <tr v-for="songPlaylist in playlist?.songs" :key="songPlaylist?.id">
+                    <td class="p-2"><img :src="cover_path" width="40" height="40"/></td>
+                    <td class="p-2">{{songPlaylist?.name}}</td>
+                    <td class="p-2">{{ formatDate(songPlaylist?.created_at) }}</td>
+                    <td class="p-2">{{songPlaylist?.name}}</td>
+                    <td class="p-2">{{songPlaylist?.name}}</td>
+                    <td class="p-2">
+                        <a @click="deleteSong(songPlaylist.id)" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
       <!-- search for songs to add them to playlist-->
       <!-- search section -->
       <div class="w-full ">
@@ -177,7 +213,8 @@ export default {
       searchQuery: '',
       songs: [],
       loading: false,
-      playlist:[],
+      playlist:[
+      ],
     };
   },
   methods: {
@@ -215,4 +252,12 @@ export default {
       }
   },
 };
+</script>
+<script setup>
+    const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Intl.DateTimeFormat('de-DE', options).format(date);
+    };
 </script>

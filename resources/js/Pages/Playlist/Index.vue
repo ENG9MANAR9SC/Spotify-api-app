@@ -1,7 +1,7 @@
 <template>
     <div >
         <div class="py-3 px-2">Playlist All : </div>
-        <div v-if="Loading" class="m-3">
+        <div v-if="loading" class="m-3">
             <h3>Loading--</h3>
         </div>
         <div v-else class="">
@@ -42,7 +42,7 @@
 export default {
     data() {
         return {
-            Loading:false,
+            loading:false,
             playlists:[],
         };
         
