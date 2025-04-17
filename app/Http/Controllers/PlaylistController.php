@@ -36,11 +36,12 @@ class PlaylistController extends Controller
 
     public function getPlaylists(Request $request)
     {
-        
+        $perPge = request('per_page') ?? 8 ;
         $user = Auth::user();
         $playlist = Playlist::all();
         if ($user && $user->playlists()->count() > 0) {
-            $playlists = $user->playlists()->paginate(10);
+            $playlists = $user->playlists()->paginate($perPge);
+
             return response()->json($playlists);
         }
         else {

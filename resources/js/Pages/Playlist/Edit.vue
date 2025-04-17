@@ -84,7 +84,7 @@
         </ul>
         
         <div v-else-if="loading && searchQuery">Loading songs...</div>
-        {{ loading }} {{ searchQuery }}
+        
         <div class="flex justify-center my-4" v-if="songs && totalSongs> perPage">
           <button
             :disabled="currentPage=== 1"
