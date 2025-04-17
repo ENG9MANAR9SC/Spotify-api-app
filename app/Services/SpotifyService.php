@@ -67,32 +67,14 @@ class SpotifyService
         return $this->httpClient->withToken($accessToken)->$method('https://api.spotify.com/v1/' . $uri, $data);
     }
 
-    public function searchPlaylists(string $query)
-    {
-        
-        $response = $this->makeRequest('get', 'search', [
-            'q' => $query,
-            'type' => 'playlist',
-        ]);
-
-        return $response ? $response->json()['playlists']['items'] ?? [] : [];
-    }
-
-    public function getPlaylistById(string $playlistId)
-    {
-        $response = $this->makeRequest('get', 'playlists/' . $playlistId);
-        return $response ? $response->json() : null;
-    }
-
-    public function getPlaylistTracks(string $playlistId, array $options = [])
-    {
-        $response = $this->makeRequest('get', 'playlists/' . $playlistId . '/tracks', $options);
-        return $response ? $response->json()['items'] ?? [] : [];
-    }
     public function searchTracks(string $query, array $options = [])
     {
-        $response = $this->makeRequest('get', 'search', array_merge(['q' => $query, 'type' => 'track'], $options));
-        return $response ? $response->json()['tracks']['items'] ?? [] : [];
+        $defaultOptions = ['q' => $query, 'type' => 'track'];
+        $mergedOptions = array_merge($defaultOptions, $options);
+        
+        $response = $this->makeRequest('get', 'search', $mergedOptions);
+        Log::info($response);
+        return $response ? $response->json()['tracks'] ?? [] : [];
     }
     
     public function getTrack(string $trackId)
@@ -108,12 +90,6 @@ class SpotifyService
         }
         $response = $this->makeRequest('get', 'tracks', ['ids' => implode(',', $trackIds)]);
         return $response ? $response->json()['tracks'] ?? [] : [];
-    }
-
-    public function getTrackAudioFeatures(string $trackId)
-    {
-        $response = $this->makeRequest('get', 'audio-features/' . $trackId);
-        return $response ? $response->json() : null;
     }
 
 

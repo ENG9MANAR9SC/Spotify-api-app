@@ -98,7 +98,7 @@ export default {
         })
        } finally {
         this.loading = false;
-        window.location.href = 'spotify/playlist/create/{`this.newPlaylist.id`}';
+        window.location.href = 'spotify/playlist/create';
         //params: { id: this.newPlaylist.id
        }
 

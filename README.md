@@ -7,7 +7,7 @@ Diese Laravel-Applikation ermöglicht es Nutzern, auf einfache und intuitive Wei
 ## 4 create migration &  models 
 
 
-## excute the command php artisan make:command spotify:import-tracks to connect with spotify and sve songs
+## excute the command php artisan make:command spotify:import-tracks to connect with spotify and save songs
 
 ## this connection is access for 1 hour 
 

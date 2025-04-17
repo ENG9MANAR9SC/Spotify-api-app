@@ -14,7 +14,7 @@
                     <tr>
                         <th class="border border-red-400 p-2">Cover</th>
                         <th class="border border-red-400 p-2">Playlist Name</th>
-                        <th class="border border-red-400 p-2">Create At</th>
+                        <!-- <th class="border border-red-400 p-2">Created At</th> -->
                         <th class="border border-red-400 p-2">Songs</th>
                         <th class="border border-red-400 p-2">Actions</th>
                     </tr>
@@ -27,11 +27,11 @@
                 <tr v-for="playlist in playlists" :key="playlist?.id">
                     <td class="p-2"><img :src="cover_path" width="40" height="40"/></td>
                     <td class="p-2">{{playlist?.name}}</td>
-                    <td class="p-2">{{ formatDate(playlist?.created_at) }}</td>
+                    <!-- <td class="p-2">{{ formatDate(playlist?.created_at) }}</td> -->
                     <td class="p-2">1961</td>
                     <td class="p-2">
-                        <a :href="route('playlist.edit', { playlistId: playlist.id })" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Edit</a>
-                        <a @click="deletePlaylist(playlist.id)" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Delete</a>
+                        <a :href="route('playlist.edit', { playlistId: playlist.id })" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2"> Listen</a>
+                        <a @click="deletePlaylist(playlist.id)" class="text-base rounded-lg bg-red-400 text-black/70 p-2 m-2 cursor-pointer"> Delete</a>
                     </td>
                 </tr>
                 </tbody>

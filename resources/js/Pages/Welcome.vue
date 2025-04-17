@@ -40,9 +40,9 @@ function handleImageError() {
                 <header class="grid grid-cols-2 col-span-3 items-center gap-2 py-3 lg:grid-cols-3">
                     <div class="flex gap-4 lg:col-start-2 lg:justify-between">
                        <div> 
-                            <img src="/public/images/music.png" height="40" width="40"/>  
+                        <!-- <img src="resources/images/music.jpg" height="40" width="40" /> -->
                         </div>
-                        <div class="flex flex-wrap gap-2"> 
+                        <div class="flex flex-wrap items-center gap-2"> 
                             <a href="#">Home</a>
                             <a :href="route('playlists.index')">Playlists</a>
                             <!-- <a href="">Songs</a>
@@ -81,7 +81,7 @@ function handleImageError() {
                 <!-- main section -->
                 <main class="mt-2">
                     <div class="">
-                        <div class="flex flex-col items-start gap-3 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300  md:row-span-3 lg:p-10 lg:pb-10 bg-red-100">
+                        <div class="flex flex-col items-start gap-3 rounded-lg bg-white p-3 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300  md:row-span-3 lg:p-10 lg:pb-10 bg-red-100">
                             <!-- intro section -->
                             <div class="w-full">
                                 <!-- title -->
@@ -90,16 +90,19 @@ function handleImageError() {
                                 <p class="text-sm">One Good Thing About Music</p>
                                 <p class="text-2xl my-3">When It Hits You, You Feel No Pain.</p>
                                 <!-- CTA btn -->
-                                <button class="text-base rounded-lg bg-red-400 text-black/70 p-2">Listen Now</button>
+                                <!-- <button class="text-base rounded-lg bg-red-400 text-black/70 p-2">Listen Now</button> -->
                             </div>
-
+                            <div class="w-full h-1 bg-red-500 "></div>
                             <!-- search section -->
+                             
                             <div class="w-full">
-                                <!-- title -->
-                                <h2 class="p-2 text-2xl">Browse Songs</h2>
-                                <!-- search input -->
-                                <input class="rounded-lg mb-6 text-base text-black/70" type="text" v-model="searchQuery">
-                                <button @click="searchSpotifySongs" class="p-2">Search</button>
+                                <div class="flex items-start mt-6"> 
+                                    <!-- title -->
+                                    <h2 class="p-2 text-xl mr-3">Search Songs</h2>
+                                    <!-- search input -->
+                                    <input class="rounded-lg mb-6 text-base text-black/70" type="text" v-model="searchQuery">
+                                    <button @click="searchSpotifySongs" class="rounded-md p-2 text-base text-gray-800 bg-red-300 mx-3">Search</button>
+                                </div>
                                 <!-- search result -->
                                 <ul v-if="songs.length > 0" class="flex flex-wrap gap-8 justify-content-between ">
                                     <li v-for="song in songs" :key="song.id" >
@@ -111,9 +114,9 @@ function handleImageError() {
                                             <button @click="addToPlaylist(song)" class="rounded-lg text-orange bg-white/30 p-2">Add to Playlist</button>
                                         </div>
                                     </li>
-                                </ul>
-                                <p v-else-if="loading">Loading songs...</p>
-                                <p v-else>No songs found.</p>
+                                 </ul>
+                                <!--<p v-else-if="loading">Loading songs...</p>
+                                <p v-else-if="searchQuery && !loading">No songs found.</p> -->
 
                             </div>
 
