@@ -72,8 +72,8 @@
                 <div class="flex flex-col items-center bg-red-50 rounded-lg p-2">
                     <h3 class="p-2 text-base text-wrap">{{ song.name }} </h3>
                     <div class="text-base text-wrap">{{ song.album.name }} </div><span class="text-sm">{{ song.release_year }}</span>
-                    <img class="rounded-lg items-center" :src="song.album.images[0].url" width="130" height="130" />
-                    
+                    <img class="rounded-lg w-48 h-48 object-cover p-2 items-center" :src="song.album.images[0].url" height="20px" style="width: -webkit-fill-available;"/>
+
                     <audio controls :src="song.preview_url" v-if="song.preview_url"></audio>
                     <div class="flex gap-2 my-3">
                       <button v-if="song.external_urls && song.external_urls.spotify" @click="openInSpotify" class="text-base rounded-lg text-white bg-red-500 p-2">Open on Spotify</button>

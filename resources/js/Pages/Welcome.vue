@@ -85,7 +85,7 @@ function handleImageError() {
                             <!-- intro section -->
                             <div class="w-full">
                                 <!-- title -->
-                                <h2 class="p-2 text-2xl my-6 text-red-600">Spotify App</h2>
+                                <h2 class="p-2 text-2xl font-bold my-6 text-red-600">Spotify App</h2>
                                 <!-- description -->
                                 <p class="text-sm">One Good Thing About Music</p>
                                 <p class="text-2xl my-3">When It Hits You, You Feel No Pain.</p>
@@ -101,17 +101,20 @@ function handleImageError() {
                                     <h2 class="p-2 text-xl mr-3">Search Songs</h2>
                                     <!-- search input -->
                                     <input class="rounded-lg mb-6 text-base text-black/70" type="text" v-model="searchQuery">
-                                    <button @click="searchSpotifySongs" class="rounded-md p-2 text-base text-gray-800 bg-red-300 mx-3">Search</button>
+                                    <button @click="searchSpotifySongs()" class="rounded-md p-2 px-4 text-sm text-white bg-red-500 mx-3">Search</button>
                                 </div>
                                 <!-- search result -->
                                 <ul v-if="songs.length > 0" class="flex flex-wrap gap-8 justify-content-between ">
                                     <li v-for="song in songs" :key="song.id" >
-                                        <div>
+                                        <div class="flex flex-col items-center bg-red-50 rounded-lg p-2">
                                             <h3 class="p-2 text-xl text-wrap">{{ song.name }} </h3>
                                             <div class="text-base text-wrap">{{ song.album.name }} </div><span class="text-sm">{{ song.release_year }}</span>
-                                            <img class="rounded-lg" :src="song.album.images[0].url" width="130" height="130" />
+                                            <img class="rounded-lg w-48 h-48 object-cover p-2 items-center" :src="song.album.images[0].url"  style="width: -webkit-fill-available;"/>
                                             <audio controls :src="song.preview_url" v-if="song.preview_url"></audio>
-                                            <button @click="addToPlaylist(song)" class="rounded-lg text-orange bg-white/30 p-2">Add to Playlist</button>
+                                            <div class="flex gap-2 my-2">
+                                                <button v-if="song.external_urls && song.external_urls.spotify" @click="openInSpotify" class="text-sm rounded-lg text-white bg-red-500 p-2">Open on Spotify</button>
+                                                <button @click="addToPlaylist(song)" class="text-sm rounded-lg text-white bg-red-500 p-2">Add to Playlist</button>
+                                             </div>
                                         </div>
                                     </li>
                                  </ul>
@@ -121,8 +124,9 @@ function handleImageError() {
                             </div>
 
                             <!-- Trend Songs -->
-                            <song-card></song-card>
-
+                             <div class="mt-12">
+                                <song-card></song-card>
+                            </div>
                         </div>
                     </div>
                 </main>
@@ -157,8 +161,7 @@ export default {
         try {
             axios.get(`/spotify/songs/search?q=${this.searchQuery}`)
             .then(response => {
-                this.songs = response.data;
-
+                this.songs = response.data.data;
             })
             .catch(error => {
                 console.error('Error searching songs:', error);
