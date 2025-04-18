@@ -47,7 +47,7 @@
                           <div class="flex gap-2 text-sm">  
                               <button v-if="song.external_urls && song.external_urls.spotify" @click="openInSpotify" class="rounded-lg text-white bg-red-500 p-2">Open on Spotify</button>
                               <Button
-                                  @click="addToPlaylist(song)"
+                                  @click="openInSpotify"
                                   class="bg-red-500 p-2 text-white rounded-lg"
                               >
                                   Discover More Songs

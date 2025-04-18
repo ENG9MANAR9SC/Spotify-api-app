@@ -18,11 +18,12 @@
       </div>
       <!-- Songs -->
        <div class="mb-6 p-2">
-        <div class="flex justify-between mb-4">
-          <h3 class="text-base font-bold text-red-900"> Your Songs</h3>
-           
-         </div>
-         <!-- filter -->
+          <div class="flex justify-between mb-4">
+            <h3 class="text-base font-bold text-red-900"> Your Songs</h3>
+            
+          </div>
+          
+          <!-- filter -->
           <div class="flex my-4 text-sm gap-4">
             <!-- filter by artist -->
             <div class="filter-input">
@@ -90,7 +91,7 @@
       <div class="w-full ">
         <div class="flex gap-2 items-start my-6"> 
           <!-- title -->
-          <h2 class="text-xl">Browse Songs From Spotify</h2>
+          <h2 class="text-base font-bold text-red-900">Browse Songs From Spotify</h2>
           <!-- search input -->
           <input class="rounded-lg text-base text-black/70" type="text" v-model="searchQuery">
           <button @click="searchSpotifySongs" class="rounded-lg p-1 text-base text-red-500 bg-white border-2 border-red-500 my-auto px-4 mx-2 border-solid-1">Search</button>
@@ -186,9 +187,8 @@ export default {
         }
     },
     getPlaylist() {
-      const playlistId = window.location.pathname.split('/').pop(); 
       try {
-        axios.get(`/spotify/playlists/show/${playlistId}?search_key=${this.searchKey}&artist_key=${this.selectedArtist}&year_key=${this.selectedYear}`)
+        axios.get(`/spotify/playlists/show/${this.playlistId}?search_key=${this.searchKey}&artist_key=${this.selectedArtist}&year_key=${this.selectedYear}`)
         .then(response => {
           this.playlist = response.data.playlist;
           this.artists  = response.data.artists;
@@ -202,9 +202,8 @@ export default {
     addToPlaylist(song) {
       try {
         this.loading = true;
-        const playlistId = window.location.pathname.split('/').pop(); 
         console.log(song.id);
-        axios.post(`/spotify/playlists/${playlistId}/songs/add`,{
+        axios.post(`/spotify/playlists/${this.playlistId}/songs/add`,{
           selected_song_id : song.id,
         })
         .then(response => {
@@ -216,18 +215,16 @@ export default {
         });}
          finally {
           this.loading = false;
-          const playlistId = window.location.pathname.split('/').pop(); 
-          //window.location.href = `/spotify/playlist/edit/${playlistId}`;
+          window.location.href = `/spotify/playlist/edit/${this.playlistId}`;
         }
       },
     openInSpotify(url) {
         window.open(url, '_blank');
       },
     deleteSong(song) {
-      const playlistId = window.location.pathname.split('/').pop(); 
       try {           
         if (confirm('Are you sure you want to delete this Song?')) {
-            axios.post(`/spotify/playlists/${playlistId}/songs/${song.id}/delete`)
+            axios.post(`/spotify/playlists/${this.playlistId}/songs/${song.id}/delete`)
                 .then(() => {
                     console.log('Error deleting song:');
                 })
@@ -238,12 +235,13 @@ export default {
             }
         } finally {
             this.loading = false;
-            //window.location.href = 'index';
+            window.location.href = 'index';
         }
     },
  
   },
   mounted() {
+    this.playlistId = window.location.pathname.split('/').pop(); 
     this.getPlaylist();
   }
 };
