@@ -155,10 +155,47 @@ class PlaylistController extends Controller
 
     public function show(string $playlistId) : JsonResponse
     {
-
+        
+        $searchKey      = request()->input('search_key') ?? null;
+        $selectedArtist = request()->input('artist_key') ?? null;
+        $selectedYear   = request()->input('year_key')   ?? null;
+        
         $playlist =Playlist::with('songs')->findOrFail($playlistId);
         
-        return response()->json($playlist);
+        $filteredSongs = $playlist->songs; // Start with all songs
+
+        if ($searchKey !== null) {
+            $searchTerm = strtolower($searchKey);
+            $filteredSongs = $filteredSongs->filter(function ($song) use ($searchTerm) {
+                return str_contains(strtolower($song->name), $searchTerm) ||
+                    str_contains(strtolower($song->artist), $searchTerm) ||
+                    (isset($song->album) && str_contains(strtolower($song->album), $searchTerm));
+            });
+        }
+
+        if ($selectedArtist !== null && $selectedArtist !== '') {
+            $filteredSongs = $filteredSongs->filter(function ($song) use ($selectedArtist) {
+                return strtolower($song->artist) === strtolower($selectedArtist);
+            });
+        }
+
+        if ($selectedYear != null) {
+            $filteredSongs = $filteredSongs->filter(function ($song) use ($selectedYear) {
+                return $song->release_year === $selectedYear;
+            });
+        }
+
+        // Update the playlist's 'songs' relation with the filtered collection
+        $playlist->setRelation('songs', $filteredSongs);
+
+        $artists = Song::distinct('artist')->orderBy('artist')->pluck('artist');
+        $years = Song::distinct('release_year')->orderBy('year')->pluck('release_year');
+
+        return response()->json([
+            'playlist' => $playlist,
+            'artists'  => $artists,
+            'years'    => $years,
+        ], 200);
 
     }
 

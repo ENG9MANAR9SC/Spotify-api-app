@@ -18,10 +18,39 @@
       </div>
       <!-- Songs -->
        <div class="mb-6 p-2">
-        <h3 class="text-base mb-3"> Your Songs</h3>
+        <div class="flex justify-between mb-4">
+          <h3 class="text-base font-bold text-red-900"> Your Songs</h3>
+           
+         </div>
+         <!-- filter -->
+          <div class="flex my-4 text-sm gap-4">
+            <!-- filter by artist -->
+            <div class="filter-input">
+              <label for="artist" class="px-2">Filter by Artist:</label>
+              <select id="artist" v-model="selectedArtist" class="rounded-lg"> 
+                <option value="">All Artists</option>
+                <option v-for="artist in artists" :key="artist" :value="artist">{{ artist }}</option>
+              </select>
+            </div>
+            <!-- filter by year -->
+            <div class="filter-input">
+              <label for="year" class="px-2">Filter by Year:</label>
+              <select id="year" v-model="selectedYear" class="rounded-lg">
+                <option value="">All Years</option>
+                <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+              </select>
+            </div>
+            <!-- search -->
+            <div class="">
+              <label for="year" class="px-2">search for Name song / album</label>
+              <input class="rounded-lg text-sm text-black/70 mx-2" type="text" v-model="searchKey">
+              <button @click="getPlaylist()" class="rounded-md p-2 px-4 text-sm text-white bg-red-500">Search</button> 
+            </div> 
+          </div>
+        <!--  -->
         <div v-if="loading" class="m-3">
             <h3>Loading--</h3>
-        </div>
+        </div>                  
         <div v-else class="">
             <div class="" v-if="playlist.songs == 0">
               <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
@@ -48,7 +77,7 @@
                         <td class="p-2">{{songPlaylist?.name}}</td>
                         <td class="p-2">{{songPlaylist?.name}}</td>
                         <td class="p-2">
-                            <a @click="deleteSong(songPlaylist)" class="text-base rounded-lg cursor-pointer bg-red-400 text-black/70 p-2 m-2"> Delete</a>
+                            <a @click="deleteSong(songPlaylist)" class="text-base rounded-lg cursor-pointer bg-red-500 text-white p-2 m-2"> Delete</a>
                         </td>
                     </tr>
                   </tbody>
@@ -61,7 +90,7 @@
       <div class="w-full ">
         <div class="flex gap-2 items-start my-6"> 
           <!-- title -->
-          <h2 class="text-xl">Browse Songs</h2>
+          <h2 class="text-xl">Browse Songs From Spotify</h2>
           <!-- search input -->
           <input class="rounded-lg text-base text-black/70" type="text" v-model="searchQuery">
           <button @click="searchSpotifySongs" class="rounded-lg p-1 text-base text-red-500 bg-white border-2 border-red-500 my-auto px-4 mx-2 border-solid-1">Search</button>
@@ -129,6 +158,11 @@ export default {
       playlist:[
       ],
       isModalOpen:false,
+      searchKey:'',
+      artists:[],
+      selectedArtist:'',
+      years :[],
+      selectedYear:'',
     };
   },
   methods: {
@@ -154,9 +188,11 @@ export default {
     getPlaylist() {
       const playlistId = window.location.pathname.split('/').pop(); 
       try {
-        axios.get(`/spotify/playlists/show/${playlistId}`)
+        axios.get(`/spotify/playlists/show/${playlistId}?search_key=${this.searchKey}&artist_key=${this.selectedArtist}&year_key=${this.selectedYear}`)
         .then(response => {
-          this.playlist = response.data;
+          this.playlist = response.data.playlist;
+          this.artists  = response.data.artists;
+          this.years    = response.data.years;
         })
           
         } catch (error) {
@@ -181,7 +217,7 @@ export default {
          finally {
           this.loading = false;
           const playlistId = window.location.pathname.split('/').pop(); 
-         // window.location.href = `/spotify/playlist/edit/${playlistId}`;
+          //window.location.href = `/spotify/playlist/edit/${playlistId}`;
         }
       },
     openInSpotify(url) {
